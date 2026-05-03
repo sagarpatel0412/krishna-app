@@ -16,6 +16,7 @@ import GalleryPage from "./pages/gallery/GalleryPage";
 import LoginPage from "./pages/login/LoginPage";
 import RegisterPage from "./pages/register/RegisterPage";
 import ProtectedRoute from "./components/protected/ProtectedRoute";
+import AboutPage from "./pages/about/AboutPage";
 
 function App() {
   return (
@@ -78,6 +79,7 @@ function App() {
         <Route path="/gallery" element={<GalleryPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/about" element={<AboutPage />} />
       </Routes>
     </BrowserRouter>
   );

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getSBSlok } from "../../../services/sbService";
 import type { SBSlok } from "../../../types/sb";
+import AskAIChat from "../../../components/ai-chat/AskAIChat";
+import VoiceButton from "../../../components/voice/VoiceButton";
 
 export default function SBSlokDetailPage() {
   const { cantoNumber, chapterNumber, verseKey } = useParams();
@@ -31,7 +33,6 @@ export default function SBSlokDetailPage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-blue-50 via-sky-50 to-white text-slate-900">
       <section className="mx-auto max-w-4xl px-6 py-10">
-        
         <Link
           to={`/books/srimad-bhagavatam/canto/${cantoNumber}/chapter/${chapterNumber}`}
           className="text-sm font-semibold text-blue-700 hover:underline"
@@ -70,6 +71,7 @@ export default function SBSlokDetailPage() {
           </h2>
 
           <p className="text-slate-700 leading-8">{slok.verse_text}</p>
+          <VoiceButton text={slok.verse_text} label="Verse" />
         </div>
 
         <div className="mt-6 rounded-3xl bg-white p-6 shadow-md">
@@ -84,6 +86,7 @@ export default function SBSlokDetailPage() {
           </h2>
 
           <p className="text-slate-800 leading-8">{slok.translation}</p>
+          <VoiceButton text={slok.translation} label="Translation" />
         </div>
 
         {slok.purport && (
@@ -95,9 +98,24 @@ export default function SBSlokDetailPage() {
             <p className="whitespace-pre-line text-slate-700 leading-8">
               {slok.purport}
             </p>
+            <VoiceButton text={slok.purport} label="Purport" />
           </div>
         )}
       </section>
+      <AskAIChat
+        context={{
+          book: "Srimad Bhagavatam",
+          cantoNumber,
+          chapterNumber,
+          verseKey,
+          title: slok.title,
+          devanagari: slok.devanagari,
+          verse_text: slok.verse_text,
+          synonyms: slok.synonyms,
+          translation: slok.translation,
+          purport: slok.purport,
+        }}
+      />
     </main>
   );
 }

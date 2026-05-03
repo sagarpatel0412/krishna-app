@@ -3,6 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import { getCCSlok } from "../../../services/ccService";
 import type { CCSlok } from "../../../types/cc";
 import Header from "../../../components/header/Header";
+import AskAIChat from "../../../components/ai-chat/AskAIChat";
+import VoiceButton from "../../../components/voice/VoiceButton";
 
 export default function CCSlokDetailPage() {
   const { lilaKey, chapterNumber, verseKey } = useParams();
@@ -73,6 +75,7 @@ export default function CCSlokDetailPage() {
           </h2>
 
           <p className="leading-8 text-slate-700">{slok.verse_text}</p>
+          <VoiceButton text={slok.verse_text} label="Verse" />
         </div>
 
         <div className="mt-6 rounded-3xl bg-white p-6 shadow-md">
@@ -87,6 +90,7 @@ export default function CCSlokDetailPage() {
           </h2>
 
           <p className="leading-8 text-slate-800">{slok.translation}</p>
+          <VoiceButton text={slok.translation} label="Translation" />
         </div>
 
         {slok.purport && (
@@ -98,9 +102,24 @@ export default function CCSlokDetailPage() {
             <p className="whitespace-pre-line leading-8 text-slate-700">
               {slok.purport}
             </p>
+            <VoiceButton text={slok.purport} label="Purport" />
           </div>
         )}
       </section>
+      <AskAIChat
+        context={{
+          book: "Chaitanya Charitamrita",
+          lilaKey,
+          chapterNumber,
+          verseKey,
+          title: slok.title,
+          devanagari: slok.devanagari,
+          verse_text: slok.verse_text,
+          synonyms: slok.synonyms,
+          translation: slok.translation,
+          purport: slok.purport,
+        }}
+      />
     </main>
   );
 }

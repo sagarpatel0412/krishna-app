@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getGitaSlok } from "../../../services/gitaService";
+import AskAIChat from "../../../components/ai-chat/AskAIChat";
+import VoiceButton from "../../../components/voice/VoiceButton";
 
 export default function GitaSlokDetailPage() {
   const { chapterNumber, verseNumber } = useParams();
@@ -69,6 +71,7 @@ export default function GitaSlokDetailPage() {
           <p className="whitespace-pre-line text-xl leading-10 text-center font-medium">
             {slok.data.slok}
           </p>
+          <VoiceButton text={slok.data.slok} label="Read Shlok" />
         </div>
 
         {/* Transliteration */}
@@ -80,6 +83,10 @@ export default function GitaSlokDetailPage() {
           <p className="whitespace-pre-line text-slate-700">
             {slok.data.transliteration}
           </p>
+          <VoiceButton
+            text={slok.data.transliteration}
+            label="Transliteration"
+          />
         </div>
 
         {/* Translation */}
@@ -102,8 +109,24 @@ export default function GitaSlokDetailPage() {
           <p className="whitespace-pre-line text-slate-700 leading-8">
             {slok.data.commentaries?.prabhu?.ec}
           </p>
+          <VoiceButton
+            text={slok.data.commentaries?.prabhu?.ec}
+            label="Commentaries"
+          />
         </div>
       </section>
+      <AskAIChat
+        context={{
+          book: "Bhagavad Gita",
+          chapterNumber,
+          verseNumber,
+          title: slok.data.api_id,
+          sanskrit: slok.data.slok,
+          transliteration: slok.data.transliteration,
+          translation: slok.data.commentaries?.prabhu?.et,
+          purport: slok.data.commentaries?.prabhu?.ec,
+        }}
+      />
     </main>
   );
 }
