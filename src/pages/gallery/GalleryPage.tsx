@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Header from "../../components/header/Header";
+import PageContainer from "../../components/layout/PageContainer";
 
 type GalleryImage = {
   name: string;
@@ -21,8 +21,7 @@ export default function GalleryPage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-blue-50 via-sky-50 to-white text-slate-900">
-      <section className="mx-auto max-w-7xl px-6 py-10">
-        <Header />
+      <PageContainer>
         <div className="text-center">
           <p className="text-sm font-semibold uppercase tracking-widest text-blue-600">
             Krishna Art Gallery
@@ -68,7 +67,7 @@ export default function GalleryPage() {
             ))}
           </div>
         )}
-      </section>
+      </PageContainer>
 
       {selectedImage && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4 py-6">

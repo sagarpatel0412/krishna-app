@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getCCParts } from "../../../services/ccService";
 import type { CCPart } from "../../../types/cc";
-import Header from "../../../components/header/Header";
+import PageContainer from "../../../components/layout/PageContainer";
 
 export default function ChaitanyaCharitamritaPage() {
   const [parts, setParts] = useState<CCPart[]>([]);
@@ -17,8 +17,7 @@ export default function ChaitanyaCharitamritaPage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-blue-50 via-sky-50 to-white text-slate-900">
-      <section className="mx-auto max-w-7xl px-6 py-10">
-        <Header />
+      <PageContainer>
         <div className="mx-4">
           <Link
             to="/books"
@@ -109,7 +108,7 @@ export default function ChaitanyaCharitamritaPage() {
             </div>
           )}
         </section>
-      </section>
+      </PageContainer>
     </main>
   );
 }

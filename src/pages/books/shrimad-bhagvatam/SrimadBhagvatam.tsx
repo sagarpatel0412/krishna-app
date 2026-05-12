@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getSBCantos } from "../../../services/sbService";
 import type { SBCanto } from "../../../types/sb";
+import PageContainer from "../../../components/layout/PageContainer";
 
 export default function SrimadBhagavatamPage() {
   const [cantos, setCantos] = useState<SBCanto[]>([]);
@@ -16,22 +17,7 @@ export default function SrimadBhagavatamPage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-blue-50 via-sky-50 to-white text-slate-900">
-      <section className="mx-auto max-w-7xl px-6 py-10">
-        <nav className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-blue-700">Krishna Wisdom</h1>
-
-          <div className="hidden gap-6 text-sm font-medium text-slate-700 md:flex">
-            <a href="#" className="hover:text-blue-700">
-              Books
-            </a>
-            <a href="#" className="hover:text-blue-700">
-              Gallery
-            </a>
-            <a href="#" className="hover:text-blue-700">
-              About
-            </a>
-          </div>
-        </nav>
+      <PageContainer>
         <Link
           to="/books"
           className="text-sm font-semibold text-blue-700 hover:underline"
@@ -152,7 +138,7 @@ export default function SrimadBhagavatamPage() {
             </div>
           )}
         </section>
-      </section>
+      </PageContainer>
     </main>
   );
 }

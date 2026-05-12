@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getCCChapters } from "../../../services/ccService";
 import type { CCChapter } from "../../../types/cc";
-import Header from "../../../components/header/Header";
+import PageContainer from "../../../components/layout/PageContainer";
 
 export default function CCLilaPage() {
   const { lilaKey } = useParams();
@@ -21,8 +21,7 @@ export default function CCLilaPage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-blue-50 via-sky-50 to-white text-slate-900">
-      <section className="mx-auto max-w-7xl px-6 py-10">
-        <Header/>
+      <PageContainer>
         <div className="mx-4">
           <Link
             to="/books/chaitanya-charitamrita"
@@ -89,7 +88,7 @@ export default function CCLilaPage() {
             </div>
           )}
         </section>
-      </section>
+      </PageContainer>
     </main>
   );
 }

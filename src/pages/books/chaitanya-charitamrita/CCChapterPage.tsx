@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getCCChapterSloks } from "../../../services/ccService";
 import type { CCSlok } from "../../../types/cc";
-import Header from "../../../components/header/Header";
+import PageContainer from "../../../components/layout/PageContainer";
 
 export default function CCChapterPage() {
   const { lilaKey, chapterNumber } = useParams();
@@ -21,8 +21,7 @@ export default function CCChapterPage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-blue-50 via-sky-50 to-white text-slate-900">
-      <section className="mx-auto max-w-7xl px-6 py-10">
-        <Header />
+      <PageContainer>
         <div className="mx-4">
           <Link
             to={`/books/chaitanya-charitamrita/${lilaKey}`}
@@ -103,7 +102,7 @@ export default function CCChapterPage() {
             </div>
           )}
         </section>
-      </section>
+      </PageContainer>
     </main>
   );
 }
