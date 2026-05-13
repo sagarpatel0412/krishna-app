@@ -48,7 +48,7 @@ function Header() {
           <NavLink to="/books" className={navClass}>
             Books
           </NavLink>
-          <NavLink to="/books" className={navClass}>
+          <NavLink to="/playlists" className={navClass}>
             Playlists
           </NavLink>
           <NavLink to="/gallery" className={navClass}>

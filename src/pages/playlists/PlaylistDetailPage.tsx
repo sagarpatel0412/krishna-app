@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import PageContainer from "../../components/layout/PageContainer";
 
@@ -17,68 +17,110 @@ type Video = {
   position: number;
 };
 
-type PlaylistResponse = {
-  playlist: {
-    id: number;
-    playlist_id: string;
-    title: string;
-    url: string;
-    thumbnail: string | null;
-    video_count: number;
-
-    owner?: {
-      channel_name: string;
-      channel_url: string;
-    };
+type Playlist = {
+  id: number;
+  playlist_id: string;
+  title: string;
+  url: string;
+  thumbnail: string | null;
+  video_count: number;
+  owner?: {
+    channel_name: string;
+    channel_url: string;
   };
-
-  data: Video[];
 };
 
 export default function PlaylistDetailPage() {
   const { playlistId } = useParams();
 
-  const [playlistData, setPlaylistData] =
-    useState<PlaylistResponse | null>(null);
-
-  const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
+  const [playlist, setPlaylist] = useState<Playlist | null>(null);
+  const [videos, setVideos] = useState<Video[]>([]);
 
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
 
-  useEffect(() => {
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+
+  const observerRef = useRef<HTMLDivElement | null>(null);
+
+  async function fetchPlaylistVideos(currentPage: number) {
     if (!playlistId) return;
 
-    async function fetchPlaylist() {
-      try {
-        const response = await fetch(
-          `${API_BASE_URL}/playlists/${playlistId}/videos`,
-          {
-            headers: {
-              "x-api-key": API_KEY,
-            },
-          }
-        );
-
-        const result = await response.json();
-
-        if (result.success) {
-          setPlaylistData(result);
-
-          if (result.data.length > 0) {
-            setSelectedVideo(result.data[0]);
-          }
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
+    try {
+      if (currentPage === 1) {
+        setLoading(true);
+      } else {
+        setLoadingMore(true);
       }
-    }
 
-    fetchPlaylist();
+      const response = await fetch(
+        `${API_BASE_URL}/playlists/${playlistId}/videos?page=${currentPage}&limit=30`,
+        {
+          headers: {
+            "x-api-key": API_KEY,
+          },
+        }
+      );
+
+      const result = await response.json();
+
+      if (result.success) {
+        setPlaylist(result.playlist);
+
+        setVideos((prev) => {
+          const existingIds = new Set(prev.map((video) => video.id));
+
+          const newVideos = (result.data || []).filter(
+            (video: Video) => !existingIds.has(video.id)
+          );
+
+          return [...prev, ...newVideos];
+        });
+
+        setHasMore(Boolean(result.hasMore));
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+      setLoadingMore(false);
+    }
+  }
+
+  useEffect(() => {
+    setVideos([]);
+    setPlaylist(null);
+    setPage(1);
+    setHasMore(true);
   }, [playlistId]);
 
-  if (loading) {
+  useEffect(() => {
+    fetchPlaylistVideos(page);
+  }, [playlistId, page]);
+
+  useEffect(() => {
+    if (!observerRef.current || !hasMore || loadingMore || loading) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setPage((prev) => prev + 1);
+        }
+      },
+      {
+        threshold: 0.5,
+      }
+    );
+
+    observer.observe(observerRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [hasMore, loadingMore, loading]);
+
+  if (loading && !playlist) {
     return (
       <main className="min-h-screen bg-blue-50 p-10">
         <p className="text-slate-700">Loading playlist...</p>
@@ -86,15 +128,13 @@ export default function PlaylistDetailPage() {
     );
   }
 
-  if (!playlistData) {
+  if (!playlist) {
     return (
       <main className="min-h-screen bg-blue-50 p-10">
         <p className="text-slate-700">Playlist not found.</p>
       </main>
     );
   }
-
-  const { playlist, data: videos } = playlistData;
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-blue-50 via-sky-50 to-white">
@@ -132,25 +172,21 @@ export default function PlaylistDetailPage() {
 
                   <p className="text-sm text-slate-600">Videos</p>
                 </div>
+
+                <div className="rounded-2xl bg-blue-50 px-5 py-4">
+                  <p className="text-2xl font-bold text-blue-700">
+                    {videos.length}
+                  </p>
+
+                  <p className="text-sm text-slate-600">Loaded</p>
+                </div>
               </div>
 
               <a
                 href={playlist.url}
                 target="_blank"
                 rel="noreferrer"
-                className="
-                  mt-8
-                  inline-flex
-                  rounded-full
-                  bg-red-600
-                  px-6
-                  py-3
-                  font-semibold
-                  text-white
-                  shadow-lg
-                  transition
-                  hover:bg-red-700
-                "
+                className="mt-8 inline-flex rounded-full bg-red-600 px-6 py-3 font-semibold text-white shadow-lg transition hover:bg-red-700"
               >
                 Watch on YouTube
               </a>
@@ -176,81 +212,69 @@ export default function PlaylistDetailPage() {
             </h2>
 
             <p className="text-sm text-slate-600">
-              {videos.length} videos
+              {videos.length} / {playlist.video_count} videos
             </p>
           </div>
 
           <div className="mt-6 space-y-4">
             {videos.map((video) => (
-              <button
-                key={video.id}
-                onClick={() => setSelectedVideo(video)}
-                className={`
-                  w-full
-                  overflow-hidden
-                  rounded-3xl
-                  bg-white
-                  shadow-md
-                  transition
-                  hover:shadow-xl
-
-                  ${
-                    selectedVideo?.id === video.id
-                      ? "ring-2 ring-blue-500"
-                      : ""
-                  }
-                `}
-              >
-                <Link
+              <Link
                 key={video.id}
                 to={`/playlists/${playlist.playlist_id}/videos/${video.video_id}`}
-                className={`
-                    block
-                    overflow-hidden
-                    rounded-3xl
-                    bg-white
-                    shadow-md
-                    transition
-                    hover:shadow-xl
-                `}
-                >
+                className="block overflow-hidden rounded-3xl bg-white shadow-md transition hover:-translate-y-1 hover:shadow-xl"
+              >
                 <div className="flex flex-col md:flex-row">
-                    <div className="relative h-52 md:h-40 md:w-72">
+                  <div className="relative h-52 md:h-40 md:w-72">
                     <img
-                        src={
+                      loading="lazy"
+                      src={
+                        video.thumbnail ||
                         `https://i.ytimg.com/vi/${video.video_id}/mqdefault.jpg`
-                        }
-                        alt={video.title}
-                        className="h-full w-full object-cover"
+                      }
+                      alt={video.title}
+                      className="h-full w-full object-cover"
                     />
 
                     <div className="absolute bottom-3 right-3 rounded-full bg-black/80 px-3 py-1 text-xs font-semibold text-white">
-                        {video.duration_str}
+                      {video.duration_str || "0:00"}
                     </div>
-                    </div>
+                  </div>
 
-                    <div className="flex flex-1 flex-col justify-center p-5 text-left">
+                  <div className="flex flex-1 flex-col justify-center p-5 text-left">
                     <p className="text-xs font-semibold uppercase tracking-widest text-blue-600">
-                        Video {video.position}
+                      Video {video.position}
                     </p>
 
                     <h3 className="mt-2 text-lg font-bold leading-7 text-slate-900">
-                        {video.title}
+                      {video.title}
                     </h3>
 
                     <p className="mt-4 text-sm text-slate-600">
-                        {video.uploader}
+                      {video.uploader}
                     </p>
 
                     <p className="mt-4 text-sm font-semibold text-blue-600">
-                        Watch video →
+                      Watch video →
                     </p>
-                    </div>
+                  </div>
                 </div>
-                </Link>
-              </button>
+              </Link>
             ))}
           </div>
+
+          <div ref={observerRef} className="h-20" />
+
+          {loadingMore && (
+            <div className="pb-10 text-center">
+              <div className="inline-block h-10 w-10 animate-spin rounded-full border-4 border-blue-200 border-t-blue-600" />
+            </div>
+          )}
+
+          {!hasMore && videos.length > 0 && (
+            <p className="pb-10 text-center text-sm text-slate-500">
+              You have reached the end of this playlist.
+            </p>
+          )}
         </section>
       </PageContainer>
     </main>

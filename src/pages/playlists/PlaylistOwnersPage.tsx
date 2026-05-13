@@ -11,6 +11,7 @@ type Owner = {
   channel_name: string;
   channel_url: string;
   uploader_id: string;
+  thumbnail:string;
 };
 
 export default function PlaylistOwnersPage() {
@@ -67,6 +68,7 @@ export default function PlaylistOwnersPage() {
         ) : (
           <section className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {owners.map((owner) => (
+              
               <Link
                 key={owner.id}
                 to={`/playlists/owners/${owner.channel_id}`}
@@ -82,7 +84,7 @@ export default function PlaylistOwnersPage() {
                 "
               >
                 <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-blue-100 text-3xl">
-                  🪈
+                  <img src={owner.thumbnail}/>
                 </div>
 
                 <h2 className="mt-5 text-xl font-bold text-slate-900 group-hover:text-blue-700">
