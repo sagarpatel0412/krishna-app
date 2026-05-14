@@ -93,11 +93,12 @@ export default function GalleryPage() {
   }, [hasMore, loadingMore, loading]);
 
   function getGridImageUrl(image: GalleryImage) {
-    return image.thumbnail_link || image.image_url || image.imageViewLink || "";
+    // return image.thumbnail_link || image.image_url || image.imageViewLink || "";
+    return image.image_url || image.imageViewLink;
   }
 
   function getModalImageUrl(image: GalleryImage) {
-    return image.imageViewLink || image.image_url || image.thumbnail_link || "";
+    return image.image_url || image.imageViewLink;
   }
 
   function getOpenImageUrl(image: GalleryImage) {

@@ -1,15 +1,45 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from "../../services/authService";
+import { getIskconCentres } from "../../services/iskconCentreServices";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("test123456");
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "test123456",
+    phone: "",
+    city: "",
+    state: "",
+    country: "India",
+    iskcon_centre_id: "",
+  });
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [centres, setCentres] = useState<any[]>([]);
+  const [centresLoading, setCentresLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadCentres() {
+      try {
+        const data = await getIskconCentres();
+        setCentres(data);
+      } catch (err: any) {
+        setError(err.message || "Failed to load centres");
+      } finally {
+        setCentresLoading(false);
+      }
+    }
+
+    loadCentres();
+  }, []);
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  }
 
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
@@ -17,7 +47,11 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      await registerUser({ name, email, password });
+      await registerUser({
+        ...form, iskcon_centre_id: form.iskcon_centre_id
+          ? Number(form.iskcon_centre_id)
+          : null,
+      });
       navigate("/login");
     } catch (err: any) {
       setError(err.message || "Registration failed");
@@ -35,13 +69,20 @@ export default function RegisterPage() {
           </p>
 
           <h1 className="mt-4 text-5xl font-extrabold leading-tight">
-            Create your account and begin your spiritual reading journey.
+            Create your seeker account.
           </h1>
 
           <p className="mt-6 max-w-xl leading-8 text-blue-100">
             Read Bhagavad Gita, Srimad Bhagavatam, Chaitanya Charitamrita,
             translations, purports, and devotional wisdom in one peaceful place.
           </p>
+
+          <Link
+            to="/devotee/register"
+            className="mt-6 inline-block rounded-full bg-white px-6 py-3 font-semibold text-blue-700 shadow-lg"
+          >
+            Register as Devotee
+          </Link>
         </div>
 
         <form
@@ -50,58 +91,78 @@ export default function RegisterPage() {
         >
           <h2 className="text-3xl font-bold text-blue-700">Create account</h2>
 
-          <p className="mt-2 text-sm text-slate-600">
-            Register to continue reading.
-          </p>
-
           {error && (
             <p className="mt-4 rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-600">
               {error}
             </p>
           )}
 
-          <label className="mt-8 block text-sm font-semibold text-slate-700">
-            Name
-          </label>
-          <input
-            type="text"
-            required
-            placeholder="Sagar Patel"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="mt-2 w-full rounded-2xl border border-blue-100 px-4 py-3 outline-none focus:border-blue-500"
-          />
+          {[
+            ["name", "Name", "Sagar Patel"],
+            ["email", "Email", "sagar@test.com"],
+            ["phone", "Phone", "+91 9876543210"],
+            ["city", "City", "Ahmedabad"],
+            ["state", "State", "Gujarat"],
+            ["country", "Country", "India"],
+          ].map(([name, label, placeholder]) => (
+            <div key={name}>
+              <label className="mt-5 block text-sm font-semibold text-slate-700">
+                {label}
+              </label>
+              <input
+                name={name}
+                type={name === "email" ? "email" : "text"}
+                required={name === "name" || name === "email"}
+                placeholder={placeholder}
+                value={(form as any)[name]}
+                onChange={handleChange}
+                className="mt-2 w-full rounded-2xl border border-blue-100 px-4 py-3 outline-none focus:border-blue-500"
+              />
+            </div>
+          ))}
 
           <label className="mt-5 block text-sm font-semibold text-slate-700">
-            Email
+            ISKCON Centre
           </label>
-          <input
-            type="email"
-            required
-            placeholder="sagar@test.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+
+          <select
+            name="iskcon_centre_id"
+            value={form.iskcon_centre_id}
+            onChange={(e) =>
+              setForm({ ...form, iskcon_centre_id: e.target.value })
+            }
+            disabled={centresLoading}
             className="mt-2 w-full rounded-2xl border border-blue-100 px-4 py-3 outline-none focus:border-blue-500"
-          />
+          >
+            <option value="">
+              {centresLoading ? "Loading centres..." : "Select ISKCON centre"}
+            </option>
+
+            {centres.map((centre) => (
+              <option key={centre.id} value={centre.id}>
+                {centre.name} - {centre.city}, {centre.country}
+              </option>
+            ))}
+          </select>
 
           <label className="mt-5 block text-sm font-semibold text-slate-700">
             Password
           </label>
           <input
+            name="password"
             type="password"
             required
             minLength={6}
-            placeholder="Minimum 6 characters"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={form.password}
+            onChange={handleChange}
             className="mt-2 w-full rounded-2xl border border-blue-100 px-4 py-3 outline-none focus:border-blue-500"
           />
 
           <button
             disabled={loading}
-            className="mt-6 w-full rounded-full bg-blue-600 px-6 py-3 font-semibold text-white shadow-lg hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
+            className="mt-6 w-full rounded-full bg-blue-600 px-6 py-3 font-semibold text-white shadow-lg hover:bg-blue-700 disabled:opacity-70"
           >
-            {loading ? "Creating account..." : "Register"}
+            {loading ? "Creating account..." : "Register as User"}
           </button>
 
           <Link

@@ -27,6 +27,13 @@ import PlaylistDetailPage from "./pages/playlists/PlaylistDetailPage";
 import PlaylistOwnersPage from "./pages/playlists/PlaylistOwnersPage";
 import OwnerPlaylistsPage from "./pages/playlists/OwnerPlaylistsPage";
 import PlaylistVideoDetailPage from "./pages/playlists/PlaylistVideoDetailPage";
+import RegisterDevoteePage from "./pages/register/RegisterDevoteePage";
+import CentresPage from "./pages/centres/CentresPage";
+import AskGuidancePage from "./pages/chat/AskGuidancePage";
+import ChatRoomPage from "./pages/chat/ChatRoomPage";
+import DevoteeRoute from "./components/protected/DevoteeRoute";
+import DevoteeChatsPage from "./pages/chat/DevoteeChatsPage";
+import UserChatHistoryPage from "./pages/chat/UserChatHistoryPage";
 
 function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -117,11 +124,21 @@ function App() {
               path="/playlists/:playlistId/videos/:videoId"
               element={<PlaylistVideoDetailPage />}
             />
+
+            <Route path="/ask-guidance" element={<AskGuidancePage />} />
+            <Route path="/chat/:conversationId" element={<ChatRoomPage />} />
+            <Route path="/user/my-chats" element={<UserChatHistoryPage />} />
+          </Route>
+
+          <Route element={<DevoteeRoute />}>
+            <Route path="/devotee/chats" element={<DevoteeChatsPage />} />
           </Route>
 
           <Route path="/gallery" element={<GalleryPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/user/register" element={<RegisterPage />} />
+          <Route path="/devotee/register" element={<RegisterDevoteePage />} />
+          <Route path="/centres" element={<CentresPage />} />
           <Route path="/about" element={<AboutPage />} />
         </Routes>
       </AppLayout>

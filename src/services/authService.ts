@@ -30,20 +30,28 @@ export async function loginUser(payload: LoginPayload) {
   return json;
 }
 
-export async function registerUser(payload: RegisterPayload) {
-  const res = await fetch(`${API_BASE_URL}/auth/register`, {
+export async function registerUser(payload: any) {
+  const res = await fetch(`${API_BASE_URL}/auth/register/user`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
 
-  const json = await res.json();
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || "Registration failed");
+  return data;
+}
 
-  if (!res.ok) {
-    throw new Error(json.message || "Register failed");
-  }
+export async function registerDevotee(payload: any) {
+  const res = await fetch(`${API_BASE_URL}/auth/register/devotee`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
 
-  return json;
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || "Devotee registration failed");
+  return data;
 }
 
 export function logoutUser() {

@@ -57,6 +57,15 @@ function Header() {
           <NavLink to="/about" className={navClass}>
             About
           </NavLink>
+          <NavLink to="/centres" className={navClass}>
+            Centres
+          </NavLink>
+          <NavLink to="/ask-guidance" className={navClass}>
+            Ask Guidance
+          </NavLink>
+          <NavLink to="/user/my-chats" className={navClass}>
+            Messages
+          </NavLink>
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
