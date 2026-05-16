@@ -7,13 +7,14 @@ import {
   getConversationMessages,
   sendMessage,
 } from "../../services/chatService";
+import useAuth from "../../hooks/useAuth";
 
 type Message = {
   id: number;
   conversation_id: number;
   sender_user_id: number;
   message: string;
-  created_at: string;
+  createdAt: string;
   sender?: {
     id: number;
     name: string;
@@ -28,11 +29,17 @@ export default function ChatRoomPage() {
   const [typingUser, setTypingUser] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [devoteeUser,setDevoteeUser] = useState<any>({})
+  const [seekerUser,setSeekerUser] = useState<any>({})
 
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const typingTimeoutRef = useRef<number | null>(null);
 
   const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
+
+  const {user, isUser,isDevotee} = useAuth()
+
+  const otherUser = isDevotee ? seekerUser : devoteeUser;
 
   useEffect(() => {
     if (!conversationId) return;
@@ -40,7 +47,9 @@ export default function ChatRoomPage() {
     async function loadMessages() {
       try {
         const data = await getConversationMessages(Number(conversationId));
-        setMessages(data);
+        setMessages(data.data);
+        setDevoteeUser(data.devoteeDetails)
+        setSeekerUser(data.seekerDetails)
       } catch (err: any) {
         setError(err.message || "Failed to load messages");
       } finally {
@@ -65,13 +74,13 @@ export default function ChatRoomPage() {
     });
 
     socket.on("typing_start", (payload) => {
-      if (payload?.user?.id !== currentUser?.id) {
+      if (payload?.user?.id !== user?.id) {
         setTypingUser(payload.user.name || "Someone");
       }
     });
 
     socket.on("typing_stop", (payload) => {
-      if (payload?.user?.id !== currentUser?.id) {
+      if (payload?.user?.id !== user?.id) {
         setTypingUser("");
       }
     });
@@ -83,6 +92,18 @@ export default function ChatRoomPage() {
       socket.off("typing_stop");
     };
   }, [conversationId]);
+
+  const backLink = isDevotee
+    ? "/devotee/chats"
+    : "/ask-guidance";
+
+  const backLabel = isDevotee
+    ? "← Back to devotee chats"
+    : "← Back to guidance";
+
+  const subtitle = isDevotee
+    ? "You are replying to a seeker"
+    : "Private conversation with verified devotee";
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -96,8 +117,8 @@ export default function ChatRoomPage() {
     socket.emit("typing_start", {
       conversationId: Number(conversationId),
       user: {
-        id: currentUser?.id,
-        name: currentUser?.name,
+        id: user?.id,
+        name: user?.name,
       },
     });
 
@@ -109,8 +130,8 @@ export default function ChatRoomPage() {
       socket.emit("typing_stop", {
         conversationId: Number(conversationId),
         user: {
-          id: currentUser?.id,
-          name: currentUser?.name,
+          id: user?.id,
+          name: user?.name,
         },
       });
     }, 900);
@@ -127,8 +148,8 @@ export default function ChatRoomPage() {
     socket.emit("typing_stop", {
       conversationId: Number(conversationId),
       user: {
-        id: currentUser?.id,
-        name: currentUser?.name,
+        id: user?.id,
+        name: user?.name,
       },
     });
 
@@ -145,18 +166,18 @@ export default function ChatRoomPage() {
         <header className="flex items-center justify-between border-b border-orange-100 px-6 py-4">
           <div>
             <Link
-              to="/ask-guidance"
+              to={backLink}
               className="text-sm font-semibold text-orange-600 hover:underline"
             >
-              ← Back to guidance
+              {backLabel}
             </Link>
 
             <h1 className="mt-2 text-2xl font-extrabold text-slate-900">
-              Spiritual Guidance Chat
+              {otherUser.name}
             </h1>
 
             <p className="text-sm text-slate-500">
-              Private conversation with verified devotee
+              {subtitle}
             </p>
           </div>
 
@@ -194,7 +215,7 @@ export default function ChatRoomPage() {
           ) : (
             <div className="space-y-4">
               {messages.map((msg) => {
-                const isMine = msg.sender_user_id === currentUser?.id;
+                const isMine = msg.sender_user_id === user?.id;
 
                 return (
                   <div
@@ -225,7 +246,7 @@ export default function ChatRoomPage() {
                           isMine ? "text-orange-100" : "text-slate-400"
                         }`}
                       >
-                        {new Date(msg.created_at).toLocaleTimeString([], {
+                        {new Date(msg.createdAt).toLocaleTimeString([], {
                           hour: "2-digit",
                           minute: "2-digit",
                         })}

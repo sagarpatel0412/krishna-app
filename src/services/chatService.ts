@@ -51,7 +51,7 @@ export async function getConversationMessages(conversationId: number) {
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || "Failed to fetch messages");
 
-  return data.data || [];
+  return data || [];
 }
 
 export async function sendMessage(conversationId: number, message: string) {

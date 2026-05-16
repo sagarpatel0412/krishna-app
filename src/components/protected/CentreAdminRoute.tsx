@@ -2,11 +2,11 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { getToken } from "../../services/authService";
 import useAuth from "../../hooks/useAuth";
 
-export default function DevoteeRoute() {
+export default function CentreAdminRoute() {
   const location = useLocation();
   const token = getToken();
 
-  const { loading, isDevotee } = useAuth();
+  const { loading, isCenterAdmin } = useAuth();
 
   // const user = JSON.parse(localStorage.getItem("user") || "{}");
   // const roles = user?.roles || [];
@@ -19,7 +19,7 @@ export default function DevoteeRoute() {
     return <div className="p-10 text-center">Checking access...</div>;
   }
 
-  if (!isDevotee) {
+  if (!isCenterAdmin) {
     return <Navigate to="/" replace />;
   }
 

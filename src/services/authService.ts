@@ -25,7 +25,8 @@ export async function loginUser(payload: LoginPayload) {
   }
 
   localStorage.setItem("token", json.token || json.data?.token);
-  localStorage.setItem("user", JSON.stringify(json.user || json.data?.user));
+  // localStorage.setItem("user", JSON.stringify(json.user || json.data?.user));
+  window.dispatchEvent(new Event("auth-changed"));
 
   return json;
 }
@@ -57,6 +58,10 @@ export async function registerDevotee(payload: any) {
 export function logoutUser() {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
+
+  window.dispatchEvent(new Event("auth-changed"));
+
+  window.location.href = "/login";
 }
 
 export function getToken() {

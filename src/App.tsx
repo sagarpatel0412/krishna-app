@@ -34,6 +34,12 @@ import ChatRoomPage from "./pages/chat/ChatRoomPage";
 import DevoteeRoute from "./components/protected/DevoteeRoute";
 import DevoteeChatsPage from "./pages/chat/DevoteeChatsPage";
 import UserChatHistoryPage from "./pages/chat/UserChatHistoryPage";
+import UserRoute from "./components/protected/UserRoute";
+import DonationPage from "./pages/donations/DonationPage";
+import SeekerManagementPage from "./pages/devotee/SeekerManagementPage";
+import CentreManagementPage from "./pages/centre-admin/CentreManagementPage";
+import CentreAdminRoute from "./components/protected/CentreAdminRoute";
+import CentreUsersPage from "./pages/centre-admin/CentreUserPage";
 
 function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -127,12 +133,24 @@ function App() {
 
             <Route path="/ask-guidance" element={<AskGuidancePage />} />
             <Route path="/chat/:conversationId" element={<ChatRoomPage />} />
-            <Route path="/user/my-chats" element={<UserChatHistoryPage />} />
+            <Route path="/donations" element={<DonationPage />} />
+            <Route element={<UserRoute/>}>
+              <Route path="/user/my-chats" element={<UserChatHistoryPage />} />
+            </Route>
+            <Route element={<DevoteeRoute />}>
+              <Route path="/devotee/chats" element={<DevoteeChatsPage />} />
+              <Route path="/devotee/seeker-management" element={<SeekerManagementPage />} />
+            </Route>
+            <Route element={<CentreAdminRoute />}>
+              <Route
+                path="/centre-admin/centre-management"
+                element={<CentreManagementPage />}
+              />
+            </Route>
+            <Route path="/centre-admin/users" element={<CentreUsersPage />} />
           </Route>
 
-          <Route element={<DevoteeRoute />}>
-            <Route path="/devotee/chats" element={<DevoteeChatsPage />} />
-          </Route>
+          
 
           <Route path="/gallery" element={<GalleryPage />} />
           <Route path="/login" element={<LoginPage />} />
