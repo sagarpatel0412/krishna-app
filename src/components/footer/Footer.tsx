@@ -1,67 +1,135 @@
+// components/footer/Footer.tsx
+
 import { Link } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
-function Footer() {
+type FooterGroup = {
+  title: string;
+  links: {
+    label: string;
+    to: string;
+  }[];
+};
+
+export default function Footer() {
+  const {
+    isLoggedIn,
+    isUser,
+    isDevotee,
+    isAdmin,
+    isCenterAdmin,
+    isSuperAdmin,
+  } = useAuth();
+
+  const groups: FooterGroup[] = [
+    {
+      title: "Explore",
+      links: [
+        { label: "Books", to: "/books" },
+        { label: "Playlists", to: "/playlists" },
+        { label: "Gallery", to: "/gallery" },
+        { label: "Centres", to: "/centres" },
+        { label: "About", to: "/about" },
+      ],
+    },
+    {
+      title: "Services",
+      links: [
+        { label: "Events", to: "/events" },
+        { label: "Rooms", to: "/rooms" },
+        { label: "Donate", to: "/donations" },
+      ],
+    },
+  ];
+
+  if (isLoggedIn && isUser) {
+    groups.push({
+      title: "My Account",
+      links: [
+        { label: "Ask Guidance", to: "/ask-guidance" },
+        { label: "Messages", to: "/user/my-chats" },
+        { label: "My Events", to: "/user/my-events" },
+        { label: "My Room Bookings", to: "/user/room-bookings" },
+      ],
+    });
+  }
+
+  if (isLoggedIn && isDevotee) {
+    groups.push({
+      title: "Devotee",
+      links: [
+        { label: "Devotee Chats", to: "/devotee/chats" },
+        { label: "Manage Seekers", to: "/devotee/seeker-management" },
+        { label: "My Events", to: "/user/my-events" },
+        { label: "My Room Bookings", to: "/user/room-bookings" },
+      ],
+    });
+  }
+
+  if (isLoggedIn && (isCenterAdmin || isAdmin || isSuperAdmin)) {
+    groups.push(
+      {
+        title: "Centre Admin",
+        links: [
+          { label: "Manage Centre", to: "/centre-admin/centre-management" },
+          { label: "Manage Users", to: "/centre-admin/users" },
+        ],
+      },
+      {
+        title: "Event Admin",
+        links: [
+          { label: "Manage Events", to: "/centre-admin/events" },
+          { label: "Create Event", to: "/centre-admin/events/create" },
+          { label: "Ticket Scanner", to: "/centre-admin/ticket-scanner" },
+        ],
+      },
+      {
+        title: "Room Admin",
+        links: [
+          { label: "Manage Rooms", to: "/centre-admin/rooms" },
+          { label: "Room Bookings", to: "/centre-admin/room-bookings" },
+        ],
+      }
+    );
+  }
+
   return (
-    <footer className="w-full bg-slate-950 text-slate-200">
-      <div
-        className="
-            mx-auto
-            grid
-            w-full
-            max-w-[1800px]
+    <footer className="bg-gradient-to-r from-blue-800 via-sky-700 to-blue-600 px-6 py-10 text-white">
+      <section className="mx-auto max-w-7xl">
+        <div className="grid gap-8 md:grid-cols-[1.5fr_3fr]">
+          <div>
+            <h2 className="text-2xl font-extrabold">Krishna Wisdom</h2>
+            <p className="mt-3 max-w-sm text-sm leading-7 text-blue-100">
+              Scripture, devotion, guidance, events, donations and ISKCON centre
+              services in one peaceful platform.
+            </p>
+          </div>
 
-            gap-8
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {groups.map((group) => (
+              <div key={group.title}>
+                <h3 className="font-bold text-white">{group.title}</h3>
 
-            px-4
-            sm:px-6
-            md:px-8
-            lg:px-10
-            xl:px-12
-
-            py-10
-
-            md:grid-cols-3
-        "
-        >
-        <div>
-          <h2 className="text-2xl font-extrabold text-white">
-            Krishna Wisdom
-          </h2>
-          <p className="mt-3 max-w-sm text-sm leading-7 text-slate-400">
-            A devotional scripture reading platform for Bhagavad Gita, Srimad
-            Bhagavatam, Chaitanya Charitamrita, and Prabhupada books.
-          </p>
-        </div>
-
-        <div>
-          <h3 className="font-bold text-white">Explore</h3>
-          <div className="mt-4 flex flex-col gap-3 text-sm text-slate-400">
-            <Link to="/books" className="hover:text-white">
-              Books
-            </Link>
-            <Link to="/gallery" className="hover:text-white">
-              Gallery
-            </Link>
-            <Link to="/about" className="hover:text-white">
-              About
-            </Link>
+                <div className="mt-4 space-y-2">
+                  {group.links.map((link) => (
+                    <Link
+                      key={link.to}
+                      to={link.to}
+                      className="block text-sm text-blue-100 transition hover:text-white hover:underline"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
-        <div>
-          <h3 className="font-bold text-white">Note</h3>
-          <p className="mt-4 text-sm leading-7 text-slate-400">
-            Translations and AI explanations are for learning support. Original
-            scripture content should be treated as the primary source.
-          </p>
+        <div className="mt-10 border-t border-white/20 pt-5 text-center text-xs text-blue-100">
+          © {new Date().getFullYear()} Krishna Wisdom. All rights reserved. Developed by Sagar Patel with Blessings Of Krishna
         </div>
-      </div>
-
-      <div className="border-t border-white/10 px-6 py-5 text-center text-xs text-slate-500">
-        © {new Date().getFullYear()} Krishna Wisdom. Built with devotion. Developed by Sagar Patel with blessings of Krishna.
-      </div>
+      </section>
     </footer>
   );
 }
-
-export default Footer;

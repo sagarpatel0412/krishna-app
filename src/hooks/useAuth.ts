@@ -58,7 +58,7 @@ export default function useAuth() {
     user,
     loading,
     isLoggedIn: !!user,
-    isUser: roles.includes("USER"),
+    isUser: roles.includes("SEEKER"),
     isDevotee: roles.includes("VERIFIED_DEVOTEE"),
     isAdmin: roles.includes("ADMIN"),
     isCenterAdmin: roles.includes("CENTER_ADMIN"),

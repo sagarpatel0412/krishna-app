@@ -40,6 +40,18 @@ import SeekerManagementPage from "./pages/devotee/SeekerManagementPage";
 import CentreManagementPage from "./pages/centre-admin/CentreManagementPage";
 import CentreAdminRoute from "./components/protected/CentreAdminRoute";
 import CentreUsersPage from "./pages/centre-admin/CentreUserPage";
+import CentreEventsPage from "./pages/centre-admin/events/CentreEventsPage";
+import CreateCentreEventPage from "./pages/centre-admin/events/CreateCentreEventsPage";
+import PublicEventPage from "./pages/events/PublicEventPage";
+import EventsPage from "./pages/events/EventsPage";
+import MyEventTicketsPage from "./pages/events/MyEventTicketsPage";
+import TicketScannerPage from "./pages/centre-admin/events/TicketScannerPage";
+import RoomsPage from "./pages/rooms/RoomsPage";
+import CentreRoomsPage from "./pages/rooms/CentreRoomsPage";
+import MyRoomBookingsPage from "./pages/rooms/MyRoomBookingsPage";
+import CentreAdminRoomsPage from "./pages/centre-admin/rooms/CentreAdminRoomsPage";
+import CentreAdminRoomBookingsPage from "./pages/centre-admin/rooms/CentreAdminRoomBookingsPage";
+import FestivalCalendarPage from "./pages/festivals/FestivalCalendarPage";
 
 function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -146,7 +158,21 @@ function App() {
                 path="/centre-admin/centre-management"
                 element={<CentreManagementPage />}
               />
+              <Route path="/centre-admin/events" element={<CentreEventsPage />} />
+              <Route path="/centre-admin/events/create" element={<CreateCentreEventPage />} />
+              <Route path="/centre-admin/ticket-scanner" element={<TicketScannerPage />} />
+              <Route path="/centre-admin/rooms" element={<CentreAdminRoomsPage />} />
+              <Route
+                path="/centre-admin/room-bookings"
+                element={<CentreAdminRoomBookingsPage />}
+              />
             </Route>
+            <Route path="/events" element={<EventsPage />} />
+            <Route path="/events/:eventCode" element={<PublicEventPage />} />
+            <Route path="/user/my-events" element={<MyEventTicketsPage />} />
+            <Route path="/rooms" element={<RoomsPage />} />
+            <Route path="/rooms/centre/:centreId" element={<CentreRoomsPage />} />
+            <Route path="/user/room-bookings" element={<MyRoomBookingsPage />} />
             <Route path="/centre-admin/users" element={<CentreUsersPage />} />
           </Route>
 
@@ -158,6 +184,10 @@ function App() {
           <Route path="/devotee/register" element={<RegisterDevoteePage />} />
           <Route path="/centres" element={<CentresPage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route
+            path="/festival-calendar"
+            element={<FestivalCalendarPage />}
+          />
         </Routes>
       </AppLayout>
     </BrowserRouter>
