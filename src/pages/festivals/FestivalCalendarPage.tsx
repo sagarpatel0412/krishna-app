@@ -34,13 +34,27 @@ export default function FestivalCalendarPage() {
   function handleEventClick(info: any) {
     const event = info.event;
 
-    alert(
-      `${event.title}
-
+    const title = event.title;
+    const description = `
 ${event.extendedProps.description || ""}
 
-${event.extendedProps.fasting || ""}`
-    );
+${event.extendedProps.fasting || ""}
+  `.trim();
+
+    const startDate = event.start;
+    const endDate = event.end || event.start;
+
+    const formatGoogleDate = (date: Date) => {
+      return date.toISOString().replace(/[-:]|\.\d{3}/g, "");
+    };
+
+    const googleCalendarUrl =
+      "https://calendar.google.com/calendar/render?action=TEMPLATE" +
+      `&text=${encodeURIComponent(title)}` +
+      `&details=${encodeURIComponent(description)}` +
+      `&dates=${formatGoogleDate(startDate)}/${formatGoogleDate(endDate)}`;
+
+    window.open(googleCalendarUrl, "_blank");
   }
 
   return (

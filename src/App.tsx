@@ -52,6 +52,8 @@ import MyRoomBookingsPage from "./pages/rooms/MyRoomBookingsPage";
 import CentreAdminRoomsPage from "./pages/centre-admin/rooms/CentreAdminRoomsPage";
 import CentreAdminRoomBookingsPage from "./pages/centre-admin/rooms/CentreAdminRoomBookingsPage";
 import FestivalCalendarPage from "./pages/festivals/FestivalCalendarPage";
+import AdminCentresPage from "./pages/admin/AdminCentresPage";
+import SuperAdminRoute from "./components/protected/SuperAdminRoute";
 
 function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -166,6 +168,9 @@ function App() {
                 path="/centre-admin/room-bookings"
                 element={<CentreAdminRoomBookingsPage />}
               />
+            </Route>
+            <Route element={<SuperAdminRoute />}>
+              <Route path="/admin/centres" element={<AdminCentresPage />} />
             </Route>
             <Route path="/events" element={<EventsPage />} />
             <Route path="/events/:eventCode" element={<PublicEventPage />} />

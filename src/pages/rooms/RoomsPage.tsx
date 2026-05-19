@@ -136,7 +136,7 @@ export default function RoomsPage() {
                 className="rounded-[2rem] border border-orange-100 bg-white p-6 shadow-xl transition hover:-translate-y-1 hover:shadow-2xl"
               >
                 <h2 className="text-2xl font-bold text-slate-900">
-                  {centre.name}
+                  {centre.centre_name}
                 </h2>
 
                 <p className="mt-3 text-sm text-slate-600">

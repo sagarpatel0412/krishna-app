@@ -96,6 +96,39 @@ export default function AskGuidancePage() {
     }
   }
 
+  function handleCreateMeet(devotee: any) {
+    console.log(devotee,'devotee')
+    const title = `Devotee Meet with ${devotee.name}`;
+
+    const details = `
+Hare Krishna 🙏
+
+Meeting with ${devotee.name}
+
+Location:
+${[devotee.city, devotee.state, devotee.country].filter(Boolean).join(", ")}
+  `.trim();
+
+    const startDate = new Date();
+    startDate.setHours(startDate.getHours() + 1);
+
+    const endDate = new Date(startDate);
+    endDate.setMinutes(endDate.getMinutes() + 30);
+
+    const formatGoogleDate = (date: Date) => {
+      return date.toISOString().replace(/[-:]|\.\d{3}/g, "");
+    };
+
+    const googleCalendarUrl =
+      "https://calendar.google.com/calendar/render?action=TEMPLATE" +
+      `&text=${encodeURIComponent(title)}` +
+      `&details=${encodeURIComponent(details)}` +
+      `&dates=${formatGoogleDate(startDate)}/${formatGoogleDate(endDate)}` +
+      `&add=${encodeURIComponent(devotee.email || "")}`;
+
+    window.open(googleCalendarUrl, "_blank");
+  }
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-yellow-50 px-6 py-8">
       <section className="mx-auto max-w-7xl">
@@ -147,11 +180,10 @@ export default function AskGuidancePage() {
                     <button
                       key={centre.id}
                       onClick={() => handleSelectCentre(centre)}
-                      className={`rounded-3xl border p-5 text-left transition hover:-translate-y-1 hover:shadow-lg ${
-                        active
+                      className={`rounded-3xl border p-5 text-left transition hover:-translate-y-1 hover:shadow-lg ${active
                           ? "border-orange-500 bg-orange-50"
                           : "border-orange-100 bg-white"
-                      }`}
+                        }`}
                     >
                       <h3 className="text-lg font-bold text-slate-900">
                         {centre.name}
@@ -246,6 +278,12 @@ export default function AskGuidancePage() {
                     className="mt-5 w-full rounded-full bg-orange-600 px-5 py-3 font-semibold text-white shadow hover:bg-orange-700"
                   >
                     Start Chat
+                  </button>
+                  <button
+                    onClick={() => handleCreateMeet(devotee)}
+                    className="mt-3 w-full rounded-full bg-blue-600 px-5 py-3 font-semibold text-white shadow hover:bg-blue-700"
+                  >
+                    Create Google Meet
                   </button>
                 </div>
               ))}

@@ -36,6 +36,39 @@ export default function DevoteeChatsPage() {
     }
   }
 
+  function handleCreateMeet(devotee: any) {
+    console.log(devotee, 'devotee')
+    const title = `Devotee Meet with ${devotee.name}`;
+
+    const details = `
+Hare Krishna 🙏
+
+Meeting with ${devotee.name}
+
+Location:
+${[devotee.city, devotee.state, devotee.country].filter(Boolean).join(", ")}
+  `.trim();
+
+    const startDate = new Date();
+    startDate.setHours(startDate.getHours() + 1);
+
+    const endDate = new Date(startDate);
+    endDate.setMinutes(endDate.getMinutes() + 30);
+
+    const formatGoogleDate = (date: Date) => {
+      return date.toISOString().replace(/[-:]|\.\d{3}/g, "");
+    };
+
+    const googleCalendarUrl =
+      "https://calendar.google.com/calendar/render?action=TEMPLATE" +
+      `&text=${encodeURIComponent(title)}` +
+      `&details=${encodeURIComponent(details)}` +
+      `&dates=${formatGoogleDate(startDate)}/${formatGoogleDate(endDate)}` +
+      `&add=${encodeURIComponent(devotee.email || "")}`;
+
+    window.open(googleCalendarUrl, "_blank");
+  }
+
   useEffect(() => {
     loadConversations();
   }, []);
@@ -91,11 +124,25 @@ export default function DevoteeChatsPage() {
                   <p className="mt-1 text-sm text-slate-500">
                     Centre: {chat.iskcon_centre?.name || "N/A"}
                   </p>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Started chatting on:{" "}
+                    {new Date(chat.createdAt).toLocaleDateString()}
+                  </p>
                 </div>
-
-                <span className="rounded-full bg-orange-100 px-4 py-2 text-sm font-bold text-orange-700">
-                  Open Chat
-                </span>
+                <div className="mx-2">
+                  <span className="rounded-full bg-orange-100 px-4 py-2 text-sm font-bold text-orange-700 mx-2">
+                    Open Chat
+                  </span>
+                  <button
+                    className="rounded-full bg-orange-100 px-4 py-2 text-sm font-bold text-orange-700"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCreateMeet(chat.seeker);
+                    }}
+                  >
+                    Create Meet
+                  </button>
+                </div>
               </div>
             </button>
           ))}

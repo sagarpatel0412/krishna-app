@@ -154,14 +154,14 @@ export default function CentresPage() {
                                 <div className="flex items-start justify-between gap-4">
                                     <div>
                                         <h2 className="text-2xl font-bold text-blue-900">
-                                            {centre.name}
+                                            {centre.centre_name}
                                         </h2>
 
-                                        {centre.centre_name && (
+                                        {/* {centre.name && (
                                             <p className="mt-2 text-sm font-medium text-blue-600">
-                                                {centre.centre_name}
+                                                {centre.name}
                                             </p>
-                                        )}
+                                        )} */}
                                     </div>
 
                                     <div className="rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-700">
