@@ -17,8 +17,12 @@ export default function LoginPage() {
     setError("");
 
     try {
-      await loginUser({ email, password });
-      navigate(from, { replace: true });
+      const data = await loginUser({ email, password });
+      if (data.requires_otp) {
+        sessionStorage.setItem("temp_user_id", String(data.temp_user_id));
+        navigate("/verify-otp");
+        return;
+      }
     } catch (err: any) {
       setError(err.message);
     }
@@ -67,9 +71,13 @@ export default function LoginPage() {
             className="mt-2 w-full rounded-2xl border border-blue-100 px-4 py-3 outline-none focus:border-blue-500"
           />
 
-          <label className="mt-5 block text-sm font-semibold text-slate-700">
-            Password
-          </label>
+          <div className="flex justify-between">
+            <label className="mt-5 block text-sm font-semibold text-slate-700">
+              Password
+            </label>
+
+            <Link to="/forgot-password" className="mt-5 block text-sm font-semibold text-blue-700 hover:text-blue-900 transition-colors hover:text-underline">Forget password ?</Link>
+          </div>
 
           <input
             type="password"

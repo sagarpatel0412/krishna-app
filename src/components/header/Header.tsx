@@ -65,6 +65,9 @@ function Header() {
         { label: "Donate", to: "/donations" },
       ],
     },
+    { label: "Profile", 
+      children: [{ label:"profile", to: "/profile" }] 
+    }
   ];
 
   const userMore: MenuItem[] = [
@@ -83,6 +86,13 @@ function Header() {
       children: [
         { label: "Devotee Chats", to: "/devotee/chats" },
         { label: "Manage Seekers", to: "/devotee/seeker-management" },
+      ],
+    },
+    {
+      label: "Lectures",
+      children: [
+        { label: "Online Lectures", to: "/lectures" },
+        { label: "Create Lecture", to: "/devotee/lectures/create" },
       ],
     },
   ];
@@ -110,6 +120,7 @@ function Header() {
         { label: "Room Bookings", to: "/centre-admin/room-bookings" },
       ],
     },
+    { label: "Profile", to: "/profile" }
   ];
 
   let moreItems: MenuItem[] = [...commonMore];
@@ -156,9 +167,15 @@ function Header() {
           </NavLink>
 
           {isLoggedIn && isUser && (
-            <NavLink to="/ask-guidance" className={navClass}>
-              Ask Guidance
-            </NavLink>
+            <>
+              <NavLink to="/lectures" className={navClass}>
+                Lectures
+              </NavLink>
+              <NavLink to="/ask-guidance" className={navClass}>
+                Ask Guidance
+              </NavLink>
+            </>
+            
           )}
 
           <div className="relative">

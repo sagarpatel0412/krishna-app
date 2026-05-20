@@ -54,6 +54,14 @@ import CentreAdminRoomBookingsPage from "./pages/centre-admin/rooms/CentreAdminR
 import FestivalCalendarPage from "./pages/festivals/FestivalCalendarPage";
 import AdminCentresPage from "./pages/admin/AdminCentresPage";
 import SuperAdminRoute from "./components/protected/SuperAdminRoute";
+import OnlineLecturesPage from "./pages/lectures/OnlineLecturesPage";
+import CreateOnlineLecturePage from "./pages/lectures/CreateOnlineLecturePage";
+import LiveLectureRoomPage from "./pages/lectures/LiveLectureRoomPage";
+import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
+import ProfilePage from "./pages/profile/ProfilePage";
+import VerifyOtpPage from "./pages/auth/VerifyOtpPage";
+import NotFoundPage from "./pages/errors/NotFoundPage";
 
 function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -154,6 +162,10 @@ function App() {
             <Route element={<DevoteeRoute />}>
               <Route path="/devotee/chats" element={<DevoteeChatsPage />} />
               <Route path="/devotee/seeker-management" element={<SeekerManagementPage />} />
+              <Route
+                path="/devotee/lectures/create"
+                element={<CreateOnlineLecturePage />}
+              />
             </Route>
             <Route element={<CentreAdminRoute />}>
               <Route
@@ -179,6 +191,12 @@ function App() {
             <Route path="/rooms/centre/:centreId" element={<CentreRoomsPage />} />
             <Route path="/user/room-bookings" element={<MyRoomBookingsPage />} />
             <Route path="/centre-admin/users" element={<CentreUsersPage />} />
+            <Route path="/lectures" element={<OnlineLecturesPage />} />
+            <Route
+              path="/lectures/:lectureId/live"
+              element={<LiveLectureRoomPage />}
+            />
+            <Route path="/profile" element={<ProfilePage />} />
           </Route>
 
           
@@ -193,6 +211,10 @@ function App() {
             path="/festival-calendar"
             element={<FestivalCalendarPage />}
           />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/verify-otp" element={<VerifyOtpPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AppLayout>
     </BrowserRouter>

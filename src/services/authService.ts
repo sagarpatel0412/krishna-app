@@ -24,9 +24,9 @@ export async function loginUser(payload: LoginPayload) {
     throw new Error(json.message || "Login failed");
   }
 
-  localStorage.setItem("token", json.token || json.data?.token);
+  // localStorage.setItem("token", json.token || json.data?.token);
   // localStorage.setItem("user", JSON.stringify(json.user || json.data?.user));
-  window.dispatchEvent(new Event("auth-changed"));
+  // window.dispatchEvent(new Event("auth-changed"));
 
   return json;
 }
@@ -53,6 +53,34 @@ export async function registerDevotee(payload: any) {
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || "Devotee registration failed");
   return data;
+}
+
+export async function verifyLoginOtp(payload: {
+  temp_user_id: number;
+  otp: string;
+}) {
+  const res = await fetch(`${API_BASE_URL}/auth/verify-login-otp`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.message || "OTP verification failed");
+  }
+
+  window.dispatchEvent(new Event("auth-changed"));
+
+  return data;
+}
+
+export function saveLoginSession(data: any) {
+  localStorage.setItem("token", data.token);
+  window.dispatchEvent(new Event("auth-changed"));
 }
 
 export function logoutUser() {
