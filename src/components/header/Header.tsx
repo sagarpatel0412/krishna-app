@@ -65,6 +65,15 @@ function Header() {
         { label: "Donate", to: "/donations" },
       ],
     },
+    {
+      label: "Support",
+      children: [
+        { label: "Suggestions", to: "/suggestions" },
+        { label: "Contact Us", to: "/contact-us" },
+        { label: "Report a Problem", to: "/report-problem" },
+        ...(isSuperAdmin ? [{ label: "Feedbacks", to: "/admin/feedback" }]: [])
+      ],
+    },
     { label: "Profile", 
       children: [{ label:"profile", to: "/profile" }] 
     }

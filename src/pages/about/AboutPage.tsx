@@ -92,6 +92,18 @@ export default function AboutPage() {
                   his mission — to make Krishna consciousness accessible through
                   reading, hearing, reflection, and sincere inquiry.
                 </p>
+                <p>
+                  <Link
+                    to="/about/prabhupada"
+                    className="group inline-flex items-center gap-2 font-semibold text-blue-700 transition hover:text-orange-600"
+                  >
+                    Read more about Srila Prabhupada
+
+                    <span className="transition-transform group-hover:translate-x-1">
+                      →
+                    </span>
+                  </Link>
+                </p>
               </div>
             </div>
 
@@ -144,6 +156,20 @@ export default function AboutPage() {
                   wisdom, and devotion.
                 </p>
               </div>
+              <div>
+                <p>
+                  <Link
+                    to="/about/iskcon"
+                    className="group inline-flex items-center gap-2 font-semibold text-white-700 transition hover:text-orange-600"
+                  >
+                    Read more about ISKCON
+
+                    <span className="transition-transform group-hover:translate-x-1">
+                      →
+                    </span>
+                  </Link>
+                </p>
+              </div>
             </div>
           </div>
         </section>
@@ -168,6 +194,174 @@ export default function AboutPage() {
               <p className="mt-3 leading-7 text-slate-600">{item.desc}</p>
             </div>
           ))}
+        </section>
+
+        <section className="mt-20">
+          <div className="text-center">
+            <p className="text-sm font-semibold uppercase tracking-widest text-blue-600">
+              Platform Features
+            </p>
+
+            <h2 className="mt-3 text-4xl font-extrabold text-slate-900">
+              What Krishna Wisdom offers
+            </h2>
+
+            <p className="mx-auto mt-5 max-w-3xl leading-8 text-slate-600">
+              Krishna Wisdom is being developed as a complete devotional ecosystem
+              for scripture learning, spiritual guidance, live satsangs, devotee
+              connection and temple-centered digital experiences.
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {[
+              {
+                title: "Sacred Scriptures",
+                icon: "📖",
+                desc: "Bhagavad Gita, Bhagavatam, Chaitanya Charitamrita and Prabhupada books with structured reading.",
+              },
+              {
+                title: "Live Satsangs",
+                icon: "🎙️",
+                desc: "Attend online lectures, centre classes, invite-only discussions and spiritual sessions.",
+              },
+              {
+                title: "Devotee Community",
+                icon: "🪔",
+                desc: "Connect seekers with verified devotees for guidance and spiritual association.",
+              },
+              {
+                title: "Festival Calendar",
+                icon: "📅",
+                desc: "Track Ekadashi, appearance days and devotional festivals according to location.",
+              },
+              {
+                title: "ISKCON Centres",
+                icon: "🏛️",
+                desc: "Explore temples, communities, lectures, events and devotional activities worldwide.",
+              },
+              {
+                title: "AI Scripture Assistant",
+                icon: "✨",
+                desc: "Ask questions from scripture context with respectful AI-assisted learning.",
+              },
+              {
+                title: "Krishna Media",
+                icon: "📺",
+                desc: "Discover devotional channels, lectures, kirtans and spiritual educational media.",
+              },
+              {
+                title: "Future Devotional Tools",
+                icon: "🔒",
+                desc: "Secure communication, spiritual planning, room booking and temple ecosystem tools.",
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="rounded-3xl bg-white p-7 shadow-md transition hover:-translate-y-1 hover:shadow-xl"
+              >
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-100 text-3xl">
+                  {item.icon}
+                </div>
+
+                <h3 className="mt-5 text-xl font-bold text-slate-900">
+                  {item.title}
+                </h3>
+
+                <p className="mt-3 leading-7 text-slate-600">
+                  {item.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-20 rounded-[2rem] bg-white p-8 shadow-xl md:p-10">
+          <div className="max-w-5xl">
+            <p className="text-sm font-semibold uppercase tracking-widest text-blue-600">
+              Core Principles
+            </p>
+
+            <h2 className="mt-3 text-4xl font-extrabold text-slate-900">
+              What guides Krishna Wisdom
+            </h2>
+
+            <div className="mt-10 grid gap-6 md:grid-cols-2">
+              {[
+                {
+                  title: "Scripture First",
+                  desc: "The platform is centred around authentic Vaishnava scripture study and devotional understanding.",
+                },
+                {
+                  title: "Peaceful Experience",
+                  desc: "Designed to avoid addictive social media patterns and encourage reflection and spiritual focus.",
+                },
+                {
+                  title: "Devotional Respect",
+                  desc: "Built with respect toward Krishna, Vaishnava teachings, temples and spiritual communities.",
+                },
+                {
+                  title: "Technology for Service",
+                  desc: "Modern technology used in service of spiritual education, association and outreach.",
+                },
+              ].map((item) => (
+                <div
+                  key={item.title}
+                  className="rounded-3xl bg-blue-50 p-6"
+                >
+                  <h3 className="text-2xl font-bold text-slate-900">
+                    {item.title}
+                  </h3>
+
+                  <p className="mt-4 leading-7 text-slate-700">
+                    {item.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-20 overflow-hidden rounded-[2rem] bg-gradient-to-br from-slate-900 to-slate-800 p-8 text-white shadow-2xl md:p-10">
+          <div className="max-w-6xl">
+            <p className="text-sm font-semibold uppercase tracking-widest text-orange-300">
+              Future Vision
+            </p>
+
+            <h2 className="mt-3 text-4xl font-extrabold">
+              Building a global devotional technology ecosystem
+            </h2>
+
+            <p className="mt-6 max-w-4xl leading-8 text-slate-300">
+              Krishna Wisdom is envisioned as a long-term spiritual infrastructure
+              platform that combines scripture learning, temple ecosystems,
+              devotional education, spiritual communication and global devotee
+              connection into one peaceful digital experience.
+            </p>
+
+            <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              {[
+                "Secure devotee communication",
+                "Temple event systems",
+                "Online satsang infrastructure",
+                "Global ISKCON centre pages",
+                "Room booking and event registration",
+                "AI scripture search and learning",
+                "Festival reminders",
+                "Devotional media ecosystem",
+                "Spiritual learning paths",
+              ].map((item) => (
+                <div
+                  key={item}
+                  className="rounded-2xl border border-white/10 bg-white/5 p-5"
+                >
+                  <p className="font-semibold text-slate-100">
+                    {item}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
         </section>
 
         <section className="mt-20 text-center">

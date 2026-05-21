@@ -7,7 +7,7 @@ function getToken() {
 }
 
 export async function getAdminRooms() {
-  const res = await fetch(`${API_URL}/centre-admin/rooms`, {
+  const res = await fetch(`${API_URL}/centre-admin/rooms/rooms`, {
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },
@@ -20,7 +20,7 @@ export async function getAdminRooms() {
 }
 
 export async function createAdminRoom(payload: any) {
-  const res = await fetch(`${API_URL}/centre-admin/rooms`, {
+  const res = await fetch(`${API_URL}/centre-admin/rooms/rooms`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -36,7 +36,7 @@ export async function createAdminRoom(payload: any) {
 }
 
 export async function updateAdminRoom(roomId: number, payload: any) {
-  const res = await fetch(`${API_URL}/centre-admin/rooms/${roomId}`, {
+  const res = await fetch(`${API_URL}/centre-admin/rooms/rooms/${roomId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -52,7 +52,7 @@ export async function updateAdminRoom(roomId: number, payload: any) {
 }
 
 export async function deleteAdminRoom(roomId: number) {
-  const res = await fetch(`${API_URL}/centre-admin/rooms/${roomId}`, {
+  const res = await fetch(`${API_URL}/centre-admin/rooms/rooms/${roomId}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${getToken()}`,
@@ -65,7 +65,7 @@ export async function deleteAdminRoom(roomId: number) {
   return data;
 }
 export async function getAdminRoomBookings() {
-  const res = await fetch(`${API_URL}/centre-admin/room-bookings`, {
+  const res = await fetch(`${API_URL}/centre-admin/rooms/room-bookings`, {
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },
@@ -85,7 +85,7 @@ export async function updateAdminRoomBookingStatus(
   payload: any
 ) {
   const res = await fetch(
-    `${API_URL}/centre-admin/room-bookings/${bookingId}/status`,
+    `${API_URL}/centre-admin/rooms/room-bookings/${bookingId}/status`,
     {
       method: "PATCH",
       headers: {

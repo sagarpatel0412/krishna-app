@@ -62,6 +62,13 @@ import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
 import ProfilePage from "./pages/profile/ProfilePage";
 import VerifyOtpPage from "./pages/auth/VerifyOtpPage";
 import NotFoundPage from "./pages/errors/NotFoundPage";
+import SuggestionsPage from "./pages/support/SuggestionsPage";
+import ContactUsPage from "./pages/support/ContactUsPage";
+import ReportProblemPage from "./pages/support/ReportProblemPage";
+import AdminFeedbackPage from "./pages/support/admin/AdminFeedbackPage";
+import ErrorBoundary from "./components/error-boundary/ErrorBoundary";
+import PrabhupadaPage from "./pages/about/prabhupada/PrabhupadaPage";
+import IskconPage from "./pages/about/iskcon/IskconPage";
 
 function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -77,146 +84,152 @@ function AppLayout({ children }: { children: React.ReactNode }) {
 function App() {
   return (
     <BrowserRouter>
-      <AppLayout>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
+      <ErrorBoundary>
+        <AppLayout>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
 
-          <Route element={<ProtectedRoute />}>
-            <Route path="/books" element={<BooksPage />} />
-            <Route path="/books/bhagavad-gita" element={<BhagavadGitaPage />} />
-            <Route
-              path="/books/bhagavad-gita/chapter/:chapterNumber"
-              element={<GitaChapterPage />}
-            />
-            <Route
-              path="/books/bhagavad-gita/chapter/:chapterNumber/verse/:verseNumber"
-              element={<GitaSlokDetailPage />}
-            />
-
-            <Route
-              path="/books/srimad-bhagavatam"
-              element={<SrimadBhagavatamPage />}
-            />
-            <Route
-              path="/books/srimad-bhagavatam/canto/:cantoNumber"
-              element={<SBCantoPage />}
-            />
-            <Route
-              path="/books/srimad-bhagavatam/canto/:cantoNumber/chapter/:chapterNumber"
-              element={<SBChapterPage />}
-            />
-            <Route
-              path="/books/srimad-bhagavatam/canto/:cantoNumber/chapter/:chapterNumber/verse/:verseKey"
-              element={<SBSlokDetailPage />}
-            />
-
-            <Route
-              path="/books/chaitanya-charitamrita"
-              element={<ChaitanyaCharitamritaPage />}
-            />
-            <Route
-              path="/books/chaitanya-charitamrita/:lilaKey"
-              element={<CCLilaPage />}
-            />
-            <Route
-              path="/books/chaitanya-charitamrita/:lilaKey/chapter/:chapterNumber"
-              element={<CCChapterPage />}
-            />
-            <Route
-              path="/books/chaitanya-charitamrita/:lilaKey/chapter/:chapterNumber/verse/:verseKey"
-              element={<CCSlokDetailPage />}
-            />
-
-            <Route path="/books/prabhupada" element={<PrabhupadaBooksPage />} />
-            <Route
-              path="/books/prabhupada/:bookKey"
-              element={<PrabhupadaBookDetailPage />}
-            />
-            <Route
-              path="/books/prabhupada/:bookKey/section/:sectionKey"
-              element={<PrabhupadaBookSectionPage />}
-            />
-
-            <Route path="/playlists" element={<PlaylistOwnersPage />} />
-            <Route
-              path="/playlists/owners/:channelId"
-              element={<OwnerPlaylistsPage />}
-            />
-
-            <Route
-              path="/playlists/:playlistId"
-              element={<PlaylistDetailPage />}
-            />
-
-            <Route
-              path="/playlists/:playlistId/videos/:videoId"
-              element={<PlaylistVideoDetailPage />}
-            />
-
-            <Route path="/ask-guidance" element={<AskGuidancePage />} />
-            <Route path="/chat/:conversationId" element={<ChatRoomPage />} />
-            <Route path="/donations" element={<DonationPage />} />
-            <Route element={<UserRoute/>}>
-              <Route path="/user/my-chats" element={<UserChatHistoryPage />} />
-            </Route>
-            <Route element={<DevoteeRoute />}>
-              <Route path="/devotee/chats" element={<DevoteeChatsPage />} />
-              <Route path="/devotee/seeker-management" element={<SeekerManagementPage />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/books" element={<BooksPage />} />
+              <Route path="/books/bhagavad-gita" element={<BhagavadGitaPage />} />
               <Route
-                path="/devotee/lectures/create"
-                element={<CreateOnlineLecturePage />}
+                path="/books/bhagavad-gita/chapter/:chapterNumber"
+                element={<GitaChapterPage />}
               />
-            </Route>
-            <Route element={<CentreAdminRoute />}>
               <Route
-                path="/centre-admin/centre-management"
-                element={<CentreManagementPage />}
+                path="/books/bhagavad-gita/chapter/:chapterNumber/verse/:verseNumber"
+                element={<GitaSlokDetailPage />}
               />
-              <Route path="/centre-admin/events" element={<CentreEventsPage />} />
-              <Route path="/centre-admin/events/create" element={<CreateCentreEventPage />} />
-              <Route path="/centre-admin/ticket-scanner" element={<TicketScannerPage />} />
-              <Route path="/centre-admin/rooms" element={<CentreAdminRoomsPage />} />
+
               <Route
-                path="/centre-admin/room-bookings"
-                element={<CentreAdminRoomBookingsPage />}
+                path="/books/srimad-bhagavatam"
+                element={<SrimadBhagavatamPage />}
               />
+              <Route
+                path="/books/srimad-bhagavatam/canto/:cantoNumber"
+                element={<SBCantoPage />}
+              />
+              <Route
+                path="/books/srimad-bhagavatam/canto/:cantoNumber/chapter/:chapterNumber"
+                element={<SBChapterPage />}
+              />
+              <Route
+                path="/books/srimad-bhagavatam/canto/:cantoNumber/chapter/:chapterNumber/verse/:verseKey"
+                element={<SBSlokDetailPage />}
+              />
+
+              <Route
+                path="/books/chaitanya-charitamrita"
+                element={<ChaitanyaCharitamritaPage />}
+              />
+              <Route
+                path="/books/chaitanya-charitamrita/:lilaKey"
+                element={<CCLilaPage />}
+              />
+              <Route
+                path="/books/chaitanya-charitamrita/:lilaKey/chapter/:chapterNumber"
+                element={<CCChapterPage />}
+              />
+              <Route
+                path="/books/chaitanya-charitamrita/:lilaKey/chapter/:chapterNumber/verse/:verseKey"
+                element={<CCSlokDetailPage />}
+              />
+
+              <Route path="/books/prabhupada" element={<PrabhupadaBooksPage />} />
+              <Route
+                path="/books/prabhupada/:bookKey"
+                element={<PrabhupadaBookDetailPage />}
+              />
+              <Route
+                path="/books/prabhupada/:bookKey/section/:sectionKey"
+                element={<PrabhupadaBookSectionPage />}
+              />
+
+              <Route path="/playlists" element={<PlaylistOwnersPage />} />
+              <Route
+                path="/playlists/owners/:channelId"
+                element={<OwnerPlaylistsPage />}
+              />
+
+              <Route
+                path="/playlists/:playlistId"
+                element={<PlaylistDetailPage />}
+              />
+
+              <Route
+                path="/playlists/:playlistId/videos/:videoId"
+                element={<PlaylistVideoDetailPage />}
+              />
+
+              <Route path="/ask-guidance" element={<AskGuidancePage />} />
+              <Route path="/chat/:conversationId" element={<ChatRoomPage />} />
+              <Route path="/donations" element={<DonationPage />} />
+              <Route element={<UserRoute />}>
+                <Route path="/user/my-chats" element={<UserChatHistoryPage />} />
+              </Route>
+              <Route element={<DevoteeRoute />}>
+                <Route path="/devotee/chats" element={<DevoteeChatsPage />} />
+                <Route path="/devotee/seeker-management" element={<SeekerManagementPage />} />
+                <Route
+                  path="/devotee/lectures/create"
+                  element={<CreateOnlineLecturePage />}
+                />
+              </Route>
+              <Route element={<CentreAdminRoute />}>
+                <Route
+                  path="/centre-admin/centre-management"
+                  element={<CentreManagementPage />}
+                />
+                <Route path="/centre-admin/events" element={<CentreEventsPage />} />
+                <Route path="/centre-admin/events/create" element={<CreateCentreEventPage />} />
+                <Route path="/centre-admin/ticket-scanner" element={<TicketScannerPage />} />
+                <Route path="/centre-admin/rooms" element={<CentreAdminRoomsPage />} />
+                <Route
+                  path="/centre-admin/room-bookings"
+                  element={<CentreAdminRoomBookingsPage />}
+                />
+              </Route>
+              <Route element={<SuperAdminRoute />}>
+                <Route path="/admin/centres" element={<AdminCentresPage />} />
+                <Route path="/admin/feedback" element={<AdminFeedbackPage />} />
+              </Route>
+              <Route path="/events" element={<EventsPage />} />
+              <Route path="/events/:eventCode" element={<PublicEventPage />} />
+              <Route path="/user/my-events" element={<MyEventTicketsPage />} />
+              <Route path="/rooms" element={<RoomsPage />} />
+              <Route path="/rooms/centre/:centreId" element={<CentreRoomsPage />} />
+              <Route path="/user/room-bookings" element={<MyRoomBookingsPage />} />
+              <Route path="/centre-admin/users" element={<CentreUsersPage />} />
+              <Route path="/lectures" element={<OnlineLecturesPage />} />
+              <Route
+                path="/lectures/:lectureId/live"
+                element={<LiveLectureRoomPage />}
+              />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/suggestions" element={<SuggestionsPage />} />
+              <Route path="/contact-us" element={<ContactUsPage />} />
+              <Route path="/report-problem" element={<ReportProblemPage />} />
             </Route>
-            <Route element={<SuperAdminRoute />}>
-              <Route path="/admin/centres" element={<AdminCentresPage />} />
-            </Route>
-            <Route path="/events" element={<EventsPage />} />
-            <Route path="/events/:eventCode" element={<PublicEventPage />} />
-            <Route path="/user/my-events" element={<MyEventTicketsPage />} />
-            <Route path="/rooms" element={<RoomsPage />} />
-            <Route path="/rooms/centre/:centreId" element={<CentreRoomsPage />} />
-            <Route path="/user/room-bookings" element={<MyRoomBookingsPage />} />
-            <Route path="/centre-admin/users" element={<CentreUsersPage />} />
-            <Route path="/lectures" element={<OnlineLecturesPage />} />
+
+            <Route path="/gallery" element={<GalleryPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/user/register" element={<RegisterPage />} />
+            <Route path="/devotee/register" element={<RegisterDevoteePage />} />
+            <Route path="/centres" element={<CentresPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/about/prabhupada" element={<PrabhupadaPage />} />
+            <Route path="/about/iskcon" element={<IskconPage />} />
             <Route
-              path="/lectures/:lectureId/live"
-              element={<LiveLectureRoomPage />}
+              path="/festival-calendar"
+              element={<FestivalCalendarPage />}
             />
-            <Route path="/profile" element={<ProfilePage />} />
-          </Route>
-
-          
-
-          <Route path="/gallery" element={<GalleryPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/user/register" element={<RegisterPage />} />
-          <Route path="/devotee/register" element={<RegisterDevoteePage />} />
-          <Route path="/centres" element={<CentresPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route
-            path="/festival-calendar"
-            element={<FestivalCalendarPage />}
-          />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
-          <Route path="/verify-otp" element={<VerifyOtpPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </AppLayout>
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="/verify-otp" element={<VerifyOtpPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </AppLayout>
+      </ErrorBoundary>
     </BrowserRouter>
   );
 }
